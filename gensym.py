@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 notice = r"""/*
- * glibc-compat.h
+ * GLIBC compatibility header
  *
  * Copyright 2021 Bill Zissimopoulos
  *
