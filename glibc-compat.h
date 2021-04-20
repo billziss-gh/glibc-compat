@@ -1,5 +1,5 @@
 /*
- * libc-compat.h
+ * glibc-compat.h
  *
  * Copyright 2021 Bill Zissimopoulos
  *
