@@ -34,7 +34,7 @@ for line in sys.stdin:
     if 2 != len(part):
         continue
     part = part[1].split()
-    if "GLIBC_PRIVATE" in part[1] or part[2].startswith("GLIBC_"):
+    if 3 != len(part) or "GLIBC_PRIVATE" in part[1] or part[2].startswith("GLIBC_"):
         continue
     sym = part[2]
     ver = part[1]
