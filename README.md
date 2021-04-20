@@ -1,4 +1,4 @@
-# GLIBC compatibility header
+# GLIBC compatibility headers
 
 This project provides header files `glibc-X.Y.h` that contain versioned symbols from specific versions of GLIBC. When using one of these headers the compiler is directed to use the specific versions of the symbols mentioned in the header and because GLIBC is backwards compatible the resulting program will run on any GLIBC-based Linux distribution that has this or a later version of GLIBC.
 
