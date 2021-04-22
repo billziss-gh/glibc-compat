@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-notice = r"""/*
+header = r"""/*
  * GLIBC compatibility header
  *
  * Copyright 2021 Bill Zissimopoulos
@@ -23,6 +23,20 @@ notice = r"""/*
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
+#define GLIBC_COMPAT_STR__(x)           GLIBC_COMPAT_STR___(x)
+#define GLIBC_COMPAT_STR___(x)          #x
+#if defined(__ASSEMBLER__)
+#define GLIBC_COMPAT_SYMVER__(a,b)      .symver a,b
+#else
+#define GLIBC_COMPAT_SYMVER__(a,b)      __asm__(".symver " GLIBC_COMPAT_STR__(a) "," GLIBC_COMPAT_STR__(b))
+#endif
+"""
+
+footer = r"""
+#undef GLIBC_COMPAT_SYMVER__
+#undef GLIBC_COMPAT_STR__
+#undef GLIBC_COMPAT_STR___
 """
 
 import sys, re
@@ -40,9 +54,10 @@ for line in sys.stdin:
     ver = part[1]
     symtab.setdefault(sym, []).append(ver)
 
-print(notice)
+print(header)
 for sym in sorted(symtab.keys()):
     ver = symtab[sym]
     ver = sorted(ver, key = lambda v: [int(p) if p.isdigit() else p.lower() for p in re.split(r'(\d+)', v)])
     ver = ver[-1].lstrip("(").rstrip(")")
-    print("__asm__(\".symver %s,%s@%s\");" % (sym, sym, ver))
+    print("GLIBC_COMPAT_SYMVER__(%s,%s@%s);" % (sym, sym, ver))
+print(footer)
